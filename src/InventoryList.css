@@ -1,0 +1,107 @@
+.inventory-list {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    overflow-x: auto; /* Handle horizontal overflow */
+    font-family: Arial, sans-serif;
+}
+
+/* Style for the table header */
+.table-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    background-color: #1685AD; /* Dark blue for the header */
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+/* Style for each item row */
+.item-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    align-items: center;
+    margin-bottom: 10px;
+    background-color: #C9F7FF; /* Light blue for rows */
+    padding: 8px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for dropdown and quantity input */
+.dropdown input, .quantity-input {
+    width: calc(100% - 16px); /* Adjusted width */
+    padding: 8px;
+    margin: 4px auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Styling for cubic feet and total cubic feet display */
+.cubic-feet, .total-cubic-feet {
+    text-align: center;
+}
+
+/* Style for the button group */
+.button-group {
+    display: flex;
+    justify-content: space-between; /* Align buttons to opposite ends */
+    margin-top: 20px;
+}
+
+/* Style for the add item button */
+.add-item-btn {
+    padding: 8px 15px;
+    background-color: #EF972C; /* Orange color for the button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.add-item-btn:hover {
+    background-color: #1685AD; /* Dark blue on hover */
+}
+
+/* Style for the submit list button */
+.submit-list-btn {
+    padding: 8px 15px;
+    background-color: #61BAE5; /* Different color for submit button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.submit-list-btn:hover {
+    background-color: #1685AD; /* Dark blue on hover */
+}
+
+/* Additional styling for Downshift's dropdown */
+.dropdown {
+    position: relative;
+}
+
+.dropdown ul {
+    position: absolute;
+    z-index: 1000;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    border-radius: 4px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 800px) {
+    .table-header, .item-row {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+}

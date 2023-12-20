@@ -1,0 +1,23 @@
+.banner {
+    background-color: #1685AD; /* Dark blue for the background */
+    color: #C9F7FF; /* Light blue for the text */
+    text-align: center;
+    padding: 20px 0;
+}
+
+.banner h1 {
+    margin-bottom: 15px; /* Space below the company name */
+    font-size: 2em; /* Adjust font size as needed */
+}
+
+.banner h2 {
+    margin-top: 0;
+    margin-bottom: 10px; /* Space above and below the headline */
+    font-size: 1.75em; /* Adjust font size as needed */
+    color: #61BAE5; /* Medium blue for the headline */
+}
+
+.banner p {
+    font-size: 1.2em; /* Adjust font size as needed */
+    color: #EF972C; /* Orange for the instructional text */
+}
