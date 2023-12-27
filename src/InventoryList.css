@@ -92,12 +92,26 @@
     z-index: 1000;
     width: 100%;
     background-color: white;
-    border: 1px solid #ccc;
+    border:none;
     max-height: 200px;
     overflow-y: auto;
     border-radius: 4px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
+.total-cubic-feet-box {
+    margin-top: 20px;
+    padding: 15px; /* Increased padding */
+    background-color: #61BAE5; /* Light blue for contrast and consistency */
+    text-align: center;
+    border-radius: 5px;
+    font-weight: bold; /* Ensure it's bold */
+    font-size: 1.5em; /* Larger font size */
+    color: #FFFFFF; /* White color for text to ensure readability */
+    border: 2px solid #1685AD; /* Dark blue border for emphasis */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow for depth */
+}
+
+
 
 /* Responsive adjustments */
 @media screen and (max-width: 800px) {
