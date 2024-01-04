@@ -386,11 +386,42 @@ const InventoryList = () => {
         setItems([...items, { ...emptyItem }]);
     };
 
-    const handleSubmit = () => {
-        console.log("Submitting Inventory List", items);
-        // Add logic here for what happens when the inventory list is submitted
-    };
+ const handleSubmit = async (inventoryList) => {
+        try {
+            const dataToSubmit = {
+                userInfo: {}, // Replace with actual user info if available
+                inventoryList
+            };
 
+            const response = await fetch('/.netlify/functions/uploadToDrive', {
+                method: 'POST',
+                body: JSON.stringify(dataToSubmit),
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            console.log('Success:', result);
+            alert('Inventory list processed and uploaded successfully!');
+        } catch (error) {
+            console.error('Error during data submission:', error);
+            alert('Failed to process inventory list');
+        }
+    };
+	
+ const handleSubmission = () => {
+        const formattedItems = items.map(item => ({
+            itemName: item.name,
+            quantity: item.quantity,
+            cubicFeet: itemsHashmap[item.name] || '0',  // Fallback to '0' if item not found
+            totalCubicFeet: ((item.quantity || 0) * (itemsHashmap[item.name] || 0)).toString(),
+        }));
+
+        handleSubmit(formattedItems);
+    };
     return (
         <div className="inventory-list">
             <div className="table-header">
@@ -454,9 +485,9 @@ const InventoryList = () => {
                     <div className="total-cubic-feet">{item.totalCubicFeet}</div>
                 </div>
             ))}
-            <div className="button-group">
-                <button onClick={addItem} className="add-item-btn">Add Item</button>
-                <button onClick={handleSubmit} className="submit-list-btn">Submit Inventory List</button>
+<div className="button-group">
+                <button onClick={() => setItems([...items, { ...emptyItem }])} className="add-item-btn">Add Item</button>
+                <button onClick={handleSubmission} className="submit-list-btn">Submit Inventory List</button>
             </div>
 			<div className="total-cubic-feet-box">
                 Current Total Cubic Feet: {totalCubicFeet}
