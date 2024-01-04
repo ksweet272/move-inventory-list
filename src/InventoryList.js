@@ -336,7 +336,6 @@ const InventoryList = () => {
     const emptyItem = { name: '', quantity: '', cubicFeet: 0, totalCubicFeet: 0, inputValue: '' };
     const initialItems = Array(5).fill().map(() => ({ ...emptyItem }));
     const [items, setItems] = useState(initialItems);
-    const [inputValue, setInputValue] = useState('');
 	const [totalCubicFeet, setTotalCubicFeet] = useState(0);
 	
     const calculateTotalCubicFeet = (items) => {
@@ -380,10 +379,6 @@ const InventoryList = () => {
             return item;
         });
         setItems(updatedItems);
-    };
-
-    const addItem = () => {
-        setItems([...items, { ...emptyItem }]);
     };
 
  const handleSubmit = async (inventoryList) => {
