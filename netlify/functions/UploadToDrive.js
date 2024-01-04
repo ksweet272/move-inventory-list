@@ -29,7 +29,8 @@ exports.handler = async (event) => {
         // File metadata and media content
         const fileMetadata = {
             name: 'MoveData.csv',
-            mimeType: 'text/csv'
+            mimeType: 'text/csv',
+            parents: ['1qNn5A6xyPmxqfy3_zJ6GaXo-JLkYgpcW'] // This specifies the folder ID where the file will be uploaded
         };
         const media = {
             mimeType: 'text/csv',
