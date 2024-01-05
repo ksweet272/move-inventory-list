@@ -1,0 +1,11 @@
+# netlify.toml
+
+[build]
+  # Directory to run your build command and where your site is built
+  publish = "build"  # Change to your build output directory if it's different
+
+[functions]
+  # Directory where your serverless functions are located
+  directory = ".netlify/functions"
+
+# Add any other build settings, redirects, headers, etc. below
