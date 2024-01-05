@@ -24,7 +24,7 @@ const CombinedForm = () => {
         if (userInfo && inventoryData.length && isSubmitted) {
             submitForm();
         }
-    }, [userInfo, inventoryData, isSubmitted]); // Re-run the effect if these values change
+    }, [userInfo, inventoryData, isSubmitted, submitForm]); // Re-run the effect if these values change
 
     const handleSubmit = () => {
         setIsSubmitted(true); // Indicate that submission has been attempted
