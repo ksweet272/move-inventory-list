@@ -1,17 +1,25 @@
-import React from 'react';
+import React, { forwardRef, useImperativeHandle } from 'react';
 import { useForm } from 'react-hook-form';
 import './UserInfoForm.css';
 
-const UserInfoForm = ({ sendUserInfo }) => {
-    const { register, handleSubmit: handleFormSubmit, formState: { errors } } = useForm();
+// Wrap your component with forwardRef to receive a ref from the parent component
+const UserInfoForm = forwardRef(({ sendUserInfo }, ref) => {
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
     const onSubmit = (formData) => {
-        console.log("Sending user info:", formData);  // Added log for debugging
+        console.log("Sending user info:", formData);  // Confirming data is being sent
         sendUserInfo(formData); // Sending the validated user information back to the parent component
     };
 
+    // Expose the handleSubmit function to the parent component
+    useImperativeHandle(ref, () => ({
+        submit: () => {
+            handleSubmit(onSubmit)(); // Trigger the form submission
+        }
+    }));
+
     return (
-        <form onSubmit={handleFormSubmit(onSubmit)} className="user-info-form">
+        <form onSubmit={handleSubmit(onSubmit)} className="user-info-form">
             <div className="form-field">
                 <label htmlFor="name">Name</label>
                 <input id="name" {...register('name', { required: 'Name is required', minLength: { value: 2, message: "Name must be at least 2 characters" }})} />
@@ -33,6 +41,6 @@ const UserInfoForm = ({ sendUserInfo }) => {
             {/* No individual submit button; submission is handled by the parent component. */}
         </form>
     );
-};
+});
 
 export default UserInfoForm;
