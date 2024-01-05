@@ -1,14 +1,28 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
 import { useForm } from 'react-hook-form';
+import DOMPurify from 'dompurify'; // Import a library to sanitize the input
 import './UserInfoForm.css';
 
-// Wrap your component with forwardRef to receive a ref from the parent component
 const UserInfoForm = forwardRef(({ sendUserInfo }, ref) => {
     const { register, handleSubmit, formState: { errors } } = useForm();
 
+    // A more robust regex for email validation
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+    const sanitizeInput = (value) => {
+        return DOMPurify.sanitize(value);
+    };
+
     const onSubmit = (formData) => {
-        console.log("Sending user info:", formData);  // Confirming data is being sent
-        sendUserInfo(formData); // Sending the validated user information back to the parent component
+        // Sanitize all inputs before using them
+        const sanitizedData = {
+            name: sanitizeInput(formData.name),
+            phone: sanitizeInput(formData.phone),
+            email: sanitizeInput(formData.email)
+        };
+
+        console.log("Sending user info:", sanitizedData);  // Confirming sanitized data is being sent
+        sendUserInfo(sanitizedData); // Sending the validated and sanitized user information back to the parent component
     };
 
     // Expose the handleSubmit function to the parent component
@@ -34,7 +48,7 @@ const UserInfoForm = forwardRef(({ sendUserInfo }, ref) => {
 
             <div className="form-field">
                 <label htmlFor="email">Email</label>
-                <input id="email" type="email" {...register('email', { required: 'Email is required', pattern: { value: /^\S+@\S+$/i, message: "Invalid email address" }})} />
+                <input id="email" type="email" {...register('email', { required: 'Email is required', pattern: { value: emailRegex, message: "Invalid email address" }})} />
                 {errors.email && <span className="error">{errors.email.message}</span>}
             </div>
 

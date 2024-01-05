@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Downshift from 'downshift';
+import DOMPurify from 'dompurify';
 import './InventoryList.css';
 
 const itemsHashmap = {
@@ -338,6 +339,9 @@ const InventoryList = ({ sendInventoryData }) => {
     const [items, setItems] = useState(initialItems);
     const [totalCubicFeet, setTotalCubicFeet] = useState(0);
     const previousFormattedItems = useRef(); // To store the previous state of formattedItems
+	const sanitizeInput = (value) => {
+        return DOMPurify.sanitize(value); // Santize input values before setting the state
+    };
 
     const calculateTotalCubicFeet = (items) => {
         return items.reduce((total, item) => total + (item.quantity * item.cubicFeet), 0);
@@ -370,13 +374,14 @@ const InventoryList = ({ sendInventoryData }) => {
 
     const handleItemChange = (selectedItem, index) => {
         if (!selectedItem) return; // Exit if no item is selected
+        const sanitizedItemName = sanitizeInput(selectedItem.name); // Sanitize the item name
         const updatedItems = items.map((item, i) => {
             if (i === index) {
                 return {
                     ...item,
-                    name: selectedItem.name,
-                    cubicFeet: itemsHashmap[selectedItem.name],
-                    totalCubicFeet: item.quantity * itemsHashmap[selectedItem.name]
+                    name: sanitizedItemName,
+                    cubicFeet: itemsHashmap[sanitizedItemName],
+                    totalCubicFeet: item.quantity * itemsHashmap[sanitizedItemName]
                 };
             }
             return item;
@@ -384,19 +389,38 @@ const InventoryList = ({ sendInventoryData }) => {
         setItems(updatedItems);
     };
 
-    const handleQuantityChange = (quantity, index) => {
+const handleQuantityChange = (quantity, index) => {
+    // Parse the input to an integer
+    let sanitizedQuantity = parseInt(sanitizeInput(quantity));
+
+    // Check if the parsed quantity is a number and not negative
+    if (!isNaN(sanitizedQuantity) && sanitizedQuantity >= 0) {
         const updatedItems = items.map((item, i) => {
             if (i === index) {
                 return {
                     ...item,
-                    quantity: quantity,
-                    totalCubicFeet: quantity * item.cubicFeet
+                    quantity: sanitizedQuantity,
+                    totalCubicFeet: sanitizedQuantity * item.cubicFeet
                 };
             }
             return item;
         });
         setItems(updatedItems);
-    };
+    } else {
+        // If the input is not a valid positive number, reset the quantity to 0 or maintain the old value
+        const updatedItems = items.map((item, i) => {
+            if (i === index) {
+                return {
+                    ...item,
+                    quantity: 0,  // or you can use item.quantity to keep the previous value
+                    totalCubicFeet: 0 * item.cubicFeet  // or use item.quantity * item.cubicFeet to keep the previous total
+                };
+            }
+            return item;
+        });
+        setItems(updatedItems);
+    }
+};
 
     return (
         <div className="inventory-list">
