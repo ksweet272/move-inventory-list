@@ -26,5 +26,3 @@ yarn-error.log*
 
 # Ignore the Google Service Account Key
 move-inventory-list-721429deca9f.json
-# Local Netlify folder
-.netlify

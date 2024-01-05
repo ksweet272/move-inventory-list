@@ -1,0 +1,19 @@
+{
+	"geolocation": {
+		"data": {
+			"city": "East Northport",
+			"country": {
+				"code": "US",
+				"name": "United States"
+			},
+			"subdivision": {
+				"code": "NY",
+				"name": "New York"
+			},
+			"timezone": "America/New_York",
+			"latitude": 40.8562,
+			"longitude": -73.3037
+		},
+		"timestamp": 1704484728465
+	}
+}
