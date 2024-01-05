@@ -1,9 +1,22 @@
 .App {
   text-align: center;
+  font-family: 'Arial', sans-serif;
+  background-color: #C9F7FF; /* Lightest color for the main background */
+}
+
+.App-header {
+  background-color: #1685AD; /* Strong color for the header */
+  min-height: 20vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 20vmin;
   pointer-events: none;
 }
 
@@ -13,19 +26,40 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.App-link {
+  color: #61BAE5; /* Softer blue for links */
 }
 
-.App-link {
-  color: #61dafb;
+.CombinedForm {
+  padding: 2rem;
+  margin-top: 2rem;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.CombinedForm .form-field {
+  margin-bottom: 1rem;
+}
+
+.CombinedForm button {
+  background-color: #EF972C; /* Vibrant color for buttons */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.CombinedForm button:hover {
+  background-color: #c76e1a; /* A darker shade for hover state */
+}
+
+.error {
+  color: #ff3860; /* A reddish color for error messages */
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
 }
 
 @keyframes App-logo-spin {

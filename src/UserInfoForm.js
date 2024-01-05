@@ -2,37 +2,12 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import './UserInfoForm.css';
 
-const UserInfoForm = () => {
+const UserInfoForm = ({ sendUserInfo }) => {
     const { register, handleSubmit: handleFormSubmit, formState: { errors } } = useForm();
 
-    // Function to handle submission to the Netlify function
-    const handleSubmit = async (data) => {
-        try {
-            const response = await fetch('/.netlify/functions/uploadToDrive', {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: { 'Content-Type': 'application/json' }
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const result = await response.json();
-            console.log('Success:', result);
-            alert('Data processed and uploaded successfully!');
-        } catch (error) {
-            console.error('Error during data submission:', error);
-            alert('Failed to process data');
-        }
-    };
-
     const onSubmit = (formData) => {
-        const dataToSubmit = {
-            userInfo: formData,
-            inventoryList: []  // Assuming no inventory items in user info form
-        };
-        handleSubmit(dataToSubmit);
+        console.log("Sending user info:", formData);  // Added log for debugging
+        sendUserInfo(formData); // Sending the validated user information back to the parent component
     };
 
     return (
@@ -55,7 +30,7 @@ const UserInfoForm = () => {
                 {errors.email && <span className="error">{errors.email.message}</span>}
             </div>
 
-            <button type="submit" className="submit-btn">Save Info</button>
+            {/* No individual submit button; submission is handled by the parent component. */}
         </form>
     );
 };

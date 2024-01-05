@@ -4,6 +4,9 @@
     padding: 20px;
     overflow-x: auto; /* Handle horizontal overflow */
     font-family: Arial, sans-serif;
+    background-color: #C9F7FF; /* Lightest color for background */
+    border-radius: 8px; /* Rounded corners for the whole list */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 /* Style for the table header */
@@ -15,7 +18,7 @@
     padding: 10px;
     text-align: center;
     font-weight: bold;
-    border-radius: 5px;
+    border-radius: 5px 5px 0 0; /* Rounded corners on top */
 }
 
 /* Style for each item row */
@@ -24,7 +27,7 @@
     grid-template-columns: 2fr 1fr 1fr 1fr;
     align-items: center;
     margin-bottom: 10px;
-    background-color: #C9F7FF; /* Light blue for rows */
+    background-color: white; /* White for individual item rows */
     padding: 8px;
     border-radius: 5px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
@@ -92,12 +95,13 @@
     z-index: 1000;
     width: 100%;
     background-color: white;
-    border:none;
+    border: none;
     max-height: 200px;
     overflow-y: auto;
     border-radius: 4px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
+
 .total-cubic-feet-box {
     margin-top: 20px;
     padding: 15px; /* Increased padding */
@@ -110,8 +114,6 @@
     border: 2px solid #1685AD; /* Dark blue border for emphasis */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow for depth */
 }
-
-
 
 /* Responsive adjustments */
 @media screen and (max-width: 800px) {

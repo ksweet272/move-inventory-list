@@ -1,13 +1,12 @@
 import React from 'react';
 import Banner from './Banner'; // Adjust the path if necessary
-import UserInfoForm from './UserInfoForm';
-import InventoryList from './InventoryList'; 
+import CombinedForm from './CombinedForm'; // Import the CombinedForm component
+
 const App = () => {
     return (
         <div>
             <Banner />
-			 <UserInfoForm />
-			 <InventoryList />
+            <CombinedForm />  
             {/* Other components will go here */}
         </div>
     );

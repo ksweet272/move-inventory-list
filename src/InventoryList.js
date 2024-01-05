@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Downshift from 'downshift';
 import './InventoryList.css';
 
@@ -332,18 +332,35 @@ const itemsHashmap = {
     "Armoire":  "30"
 };
 
-const InventoryList = () => {
+const InventoryList = ({ sendInventoryData }) => {
     const emptyItem = { name: '', quantity: '', cubicFeet: 0, totalCubicFeet: 0, inputValue: '' };
     const initialItems = Array(5).fill().map(() => ({ ...emptyItem }));
     const [items, setItems] = useState(initialItems);
-	const [totalCubicFeet, setTotalCubicFeet] = useState(0);
-	
+    const [totalCubicFeet, setTotalCubicFeet] = useState(0);
+    const previousFormattedItems = useRef(); // To store the previous state of formattedItems
+
     const calculateTotalCubicFeet = (items) => {
         return items.reduce((total, item) => total + (item.quantity * item.cubicFeet), 0);
     };
-	 useEffect(() => {
-        setTotalCubicFeet(calculateTotalCubicFeet(items));
-    }, [items]);
+
+    useEffect(() => {
+        const total = calculateTotalCubicFeet(items);
+        setTotalCubicFeet(total);
+
+        const formattedItems = items.map(item => ({
+            itemName: item.name,
+            quantity: item.quantity,
+            cubicFeet: itemsHashmap[item.name] || '0',  // Fallback to '0' if item not found
+            totalCubicFeet: ((item.quantity || 0) * (itemsHashmap[item.name] || 0)).toString(),
+        }));
+
+        // Check if formattedItems have actually changed before sending them
+        if (JSON.stringify(formattedItems) !== JSON.stringify(previousFormattedItems.current)) {
+            console.log("Sending inventory data:", formattedItems); // Logging for debugging
+            sendInventoryData(formattedItems); // Sending the data to parent component
+            previousFormattedItems.current = formattedItems; // Update the ref with the new value
+        }
+    }, [items, sendInventoryData]); // Only re-run the effect if 'items' or 'sendInventoryData' changes
     const getFilteredItems = (query) => {
         return Object.keys(itemsHashmap)
             .filter(name => name.toLowerCase().includes(query.toLowerCase()))
@@ -381,42 +398,6 @@ const InventoryList = () => {
         setItems(updatedItems);
     };
 
- const handleSubmit = async (inventoryList) => {
-        try {
-            const dataToSubmit = {
-                userInfo: {}, // Replace with actual user info if available
-                inventoryList
-            };
-
-            const response = await fetch('/.netlify/functions/uploadToDrive', {
-                method: 'POST',
-                body: JSON.stringify(dataToSubmit),
-                headers: { 'Content-Type': 'application/json' }
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const result = await response.json();
-            console.log('Success:', result);
-            alert('Inventory list processed and uploaded successfully!');
-        } catch (error) {
-            console.error('Error during data submission:', error);
-            alert('Failed to process inventory list');
-        }
-    };
-	
- const handleSubmission = () => {
-        const formattedItems = items.map(item => ({
-            itemName: item.name,
-            quantity: item.quantity,
-            cubicFeet: itemsHashmap[item.name] || '0',  // Fallback to '0' if item not found
-            totalCubicFeet: ((item.quantity || 0) * (itemsHashmap[item.name] || 0)).toString(),
-        }));
-
-        handleSubmit(formattedItems);
-    };
     return (
         <div className="inventory-list">
             <div className="table-header">
@@ -482,7 +463,7 @@ const InventoryList = () => {
             ))}
 <div className="button-group">
                 <button onClick={() => setItems([...items, { ...emptyItem }])} className="add-item-btn">Add Item</button>
-                <button onClick={handleSubmission} className="submit-list-btn">Submit Inventory List</button>
+             
             </div>
 			<div className="total-cubic-feet-box">
                 Current Total Cubic Feet: {totalCubicFeet}
