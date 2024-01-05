@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import UserInfoForm from './UserInfoForm';
 import InventoryList from './InventoryList';
 import './CombinedForm.css';
@@ -19,22 +19,8 @@ const CombinedForm = () => {
         setInventoryData(data);
     };
 
-    useEffect(() => {
-        // Whenever userInfo is updated and not null, try to submit the form.
-        if (userInfo && inventoryData.length && isSubmitted) {
-            submitForm();
-        }
-    }, [userInfo, inventoryData, isSubmitted, submitForm]); // Re-run the effect if these values change
-
-    const handleSubmit = () => {
-        setIsSubmitted(true); // Indicate that submission has been attempted
-        if (userInfoFormRef.current) {
-            userInfoFormRef.current.submit(); // Trigger the UserInfoForm submission
-        }
-        // The useEffect hook takes over from here...
-    };
-
-    const submitForm = async () => {
+    // Define submitForm using useCallback to ensure it's memorized
+    const submitForm = useCallback(async () => {
         setSubmissionStatus("Submitting...");
 
         try {
@@ -61,6 +47,21 @@ const CombinedForm = () => {
             setSubmissionStatus("Failed to process data. " + error.message);
             alert('Failed to process data. Please check the console for more details.');
         }
+    }, [userInfo, inventoryData]); // Dependencies for the useCallback
+
+    useEffect(() => {
+        // Whenever userInfo is updated and not null, try to submit the form.
+        if (userInfo && inventoryData.length && isSubmitted) {
+            submitForm();
+        }
+    }, [userInfo, inventoryData, isSubmitted, submitForm]); // Re-run the effect if these values change
+
+    const handleSubmit = () => {
+        setIsSubmitted(true); // Indicate that submission has been attempted
+        if (userInfoFormRef.current) {
+            userInfoFormRef.current.submit(); // Trigger the UserInfoForm submission
+        }
+        // The useEffect hook takes over from here...
     };
 
     return (
